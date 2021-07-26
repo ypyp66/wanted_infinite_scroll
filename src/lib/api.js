@@ -5,7 +5,5 @@ export const getComments = async pageNumber => {
     `https://jsonplaceholder.typicode.com/comments?_page=${pageNumber}&_limit=10`,
   );
 
-  if (result) {
-    return result.data;
-  }
+  return result;
 };

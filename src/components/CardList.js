@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import CardListItem from './CardListItem';
 import * as api from '../lib/api';
+import FetchMore from '../lib/FetchMore';
 
 const Conatiner = styled.div`
   margin: 0 auto;
@@ -20,24 +21,19 @@ const Inner = styled.div`
 function CardList() {
   const [pageNumber, setPageNumber] = useState(1);
   const [comments, setComments] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    api.getComments(pageNumber).then(res => setComments(comments.concat(res)));
+    setLoading(true);
+    getComments();
+
+    console.log(pageNumber);
   }, [pageNumber]);
 
-  useEffect(() => {
-    window.addEventListener('scroll', onScroll);
-    return () => window.removeEventListener('scroll', onScroll);
-  }, []);
-
-  const onScroll = () => {
-    const scrollHeight = document.documentElement.scrollHeight;
-    const scrollTop = document.documentElement.scrollTop;
-    const clientHeight = document.documentElement.clientHeight;
-
-    if (scrollHeight !== scrollTop + clientHeight) return;
-
-    setPageNumber(prev => prev + 1);
+  const getComments = async () => {
+    const result = await api.getComments(pageNumber);
+    setComments(prev => [...prev, ...result.data]);
+    setLoading(false);
   };
 
   return (
@@ -46,6 +42,7 @@ function CardList() {
         {comments.map(d => (
           <CardListItem key={d.id} data={d} />
         ))}
+        {!loading && <FetchMore setPageNumber={setPageNumber} />}
       </Inner>
     </Conatiner>
   );
