@@ -1,5 +1,7 @@
+import CardList from './components/CardList';
+
 function App() {
-  return <div>asda</div>;
+  return <><CardList /></>;
 }
 
 export default App;
