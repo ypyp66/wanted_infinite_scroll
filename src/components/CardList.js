@@ -26,11 +26,10 @@ function CardList() {
   useEffect(() => {
     setLoading(true);
     getComments();
-
-    console.log(pageNumber);
   }, [pageNumber]);
 
   const getComments = async () => {
+    if (pageNumber > 50) return;
     const result = await api.getComments(pageNumber);
     setComments(prev => [...prev, ...result.data]);
     setLoading(false);
