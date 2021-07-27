@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import CardListItem from './CardListItem';
 import Observable from './Observable';
@@ -11,7 +11,7 @@ function CardList() {
   const [error, setError] = useState(false);
   const [isLast, setIsLast] = useState(false);
 
-  const fetchComments = async () => {
+  const fetchComments = useCallback(async () => {
     try {
       const { data } = await api.fetchComments(page);
       setList(prev => [...prev, ...data]);
@@ -20,12 +20,12 @@ function CardList() {
       setError(e);
     }
     setLoading(false);
-  };
+  }, [page]);
 
   useEffect(() => {
     setLoading(true);
     !isLast && fetchComments();
-  }, [page]);
+  }, [isLast, fetchComments]);
 
   if (page === 1 && loading) return <div>로딩 중...</div>;
   if (error) return <div>데이터 로드 실패</div>;
