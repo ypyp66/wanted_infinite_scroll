@@ -1,45 +1,45 @@
-import React, { useEffect, useReducer } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import CardListItem from './CardListItem';
-import { reducer, loadingStart, success, getError } from '../lib/api';
-import { request } from '../utils/axios';
+import Observable from './Observable';
+import { request } from '../lib/api';
 
 function CardList() {
-  const PAGE = 1;
-  const [state, dispatch] = useReducer(reducer, {
-    loading: false,
-    data: null,
-    error: null,
-  });
+  const [page, setPage] = useState(1);
+  const [list, setList] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
+  const [isLast, setIsLast] = useState(false);
 
   const fetchComments = async () => {
-    dispatch(loadingStart());
     try {
+      console.log({ page });
       const response = await request(
         'get',
-        `${API_URL}_page=${PAGE}&_limit=10`,
+        `${API_URL}_page=${page}&_limit=10`,
       );
-      dispatch(success(response));
+      setList(prev => [...prev, ...response.data]);
+      setIsLast(response.data.length <= 0);
     } catch (e) {
-      dispatch(getError(e));
+      setError(e);
     }
+    setLoading(false);
   };
 
   useEffect(() => {
-    fetchComments();
-  }, []);
+    setLoading(true);
+    !isLast && fetchComments();
+  }, [page]);
 
-  const { loading, data: comments, error } = state;
-  console.log(comments);
-
-  if (loading) return <div>로딩 중...</div>;
+  if (page === 1 && loading) return <div>로딩 중...</div>;
   if (error) return <div>데이터 로드 실패</div>;
-  if (!comments) return <div>데이터 없음</div>;
+  if (!list) return <div>데이터 없음</div>;
   return (
     <CardOuter>
-      {comments.map(({ id, body, email }) => (
-        <CardListItem key={id} id={id} body={body} email={email} />
+      {list.map(({ id, email, body }) => (
+        <CardListItem key={id} id={id} email={email} body={body} />
       ))}
+      <Observable setPage={setPage} />
     </CardOuter>
   );
 }
