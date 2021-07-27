@@ -17,7 +17,7 @@ user's comment data list 를 사용하여 **infinite scroll** 을 구현한 과�
 
 ## 배포주소
 
-[click this!](www.naver.com)
+[click this!](https://infinite-scroll-assignments.netlify.app/)
 
 ## Documents
 
