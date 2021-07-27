@@ -13,7 +13,6 @@ function CardList() {
 
   const fetchComments = async () => {
     try {
-      console.log({ page });
       const response = await request(
         'get',
         `${API_URL}_page=${page}&_limit=10`,
