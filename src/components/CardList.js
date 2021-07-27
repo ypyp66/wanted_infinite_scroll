@@ -1,4 +1,5 @@
 import React, { useEffect, useReducer } from 'react';
+import styled from 'styled-components';
 import CardListItem from './CardListItem';
 import { reducer, loadingStart, success, getError } from '../lib/api';
 import { request } from '../utils/axios';
@@ -35,13 +36,17 @@ function CardList() {
   if (error) return <div>데이터 로드 실패</div>;
   if (!comments) return <div>데이터 없음</div>;
   return (
-    <div>
+    <CardOuter>
       {comments.map(({ id, body, email }) => (
         <CardListItem key={id} id={id} body={body} email={email} />
       ))}
-    </div>
+    </CardOuter>
   );
 }
+
+const CardOuter = styled.div`
+  margin-top: 33px;
+`;
 
 export default CardList;
 
