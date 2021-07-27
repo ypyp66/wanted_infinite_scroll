@@ -62,3 +62,6 @@ const Comment = styled.p`
 `;
 
 export default CardListItem;
+
+// CardListItem 컴포넌트
+// props : id, email, body

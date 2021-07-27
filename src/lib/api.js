@@ -1,14 +1,7 @@
-import axios from 'axios';
+import { request } from '../utils/axios';
 
-export const request = async (method, url, data) => {
-  try {
-    const payload = await axios({
-      method,
-      url,
-      data,
-    });
-    return payload;
-  } catch (e) {
-    throw new Error(e);
-  }
+export const fetchComments = async page => {
+  return await request('get', `${API_URL}_page=${page}&_limit=10`);
 };
+
+const API_URL = 'https://jsonplaceholder.typicode.com/comments?';

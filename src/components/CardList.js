@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import CardListItem from './CardListItem';
 import Observable from './Observable';
-import { request } from '../lib/api';
+import * as api from '../lib/api';
 
 function CardList() {
   const [page, setPage] = useState(1);
@@ -13,12 +13,9 @@ function CardList() {
 
   const fetchComments = async () => {
     try {
-      const response = await request(
-        'get',
-        `${API_URL}_page=${page}&_limit=10`,
-      );
-      setList(prev => [...prev, ...response.data]);
-      setIsLast(response.data.length <= 0);
+      const { data } = await api.fetchComments(page);
+      setList(prev => [...prev, ...data]);
+      setIsLast(data.length <= 0);
     } catch (e) {
       setError(e);
     }
@@ -49,4 +46,4 @@ const CardOuter = styled.div`
 
 export default CardList;
 
-const API_URL = 'https://jsonplaceholder.typicode.com/comments?';
+// CardListItem 들을 보여주는 CardList 컴포넌트
