@@ -4,10 +4,10 @@ import PropTypes from 'prop-types';
 CardListItem.propTypes = {
   id: PropTypes.number,
   email: PropTypes.string,
-  body: PropTypes.string
-}
+  body: PropTypes.string,
+};
 
-function CardListItem({id, email, body}) {
+function CardListItem({ id, email, body }) {
   return (
     <div>
       <div>
@@ -20,7 +20,8 @@ function CardListItem({id, email, body}) {
       </div>
       <div>
         <span>Comment</span>
-        <p>{body}</p></div>
+        <p>{body}</p>
+      </div>
     </div>
   );
 }
