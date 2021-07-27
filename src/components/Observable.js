@@ -6,9 +6,6 @@ Observable.prototype = {
 };
 function Observable({ setPage }) {
   const observableTrigger = useRef(null);
-  // const observer = new IntersectionObserver(([{ isIntersecting }]) => {
-  //   isIntersecting && setPage(page => page + 1);
-  // });
   const observer = useMemo(
     () =>
       new IntersectionObserver(([{ isIntersecting }]) => {
